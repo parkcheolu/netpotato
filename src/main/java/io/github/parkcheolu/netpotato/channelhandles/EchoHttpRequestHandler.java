@@ -1,4 +1,4 @@
-package io.github.parkcheolu.netpotato.handlers;
+package io.github.parkcheolu.netpotato.channelhandles;
 
 import io.github.parkcheolu.netpotato.utils.RequestUtils;
 import io.netty.buffer.Unpooled;
@@ -18,19 +18,17 @@ public class EchoHttpRequestHandler extends SimpleChannelInboundHandler {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        logger.info("channelReadComplete!");
         ctx.flush();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("channelRead0 entered");
+        Thread.sleep(60000);
         if (msg instanceof HttpRequest) {
-            logger.info("msg is HttpRequest");
             HttpRequest request = this.request = (HttpRequest) msg;
 
             if (HttpUtil.is100ContinueExpected(request)) {
-                logger.info("100 continue request");
                 writeResponse(ctx);
             }
             responseData.setLength(0);
@@ -39,13 +37,11 @@ public class EchoHttpRequestHandler extends SimpleChannelInboundHandler {
         responseData.append(RequestUtils.evaluateDecoderResult(request));
 
         if (msg instanceof HttpContent) {
-            logger.info("msg is HttpContent");
             HttpContent httpContent = (HttpContent) msg;
             responseData.append(RequestUtils.formatBody(httpContent));
             responseData.append(RequestUtils.evaluateDecoderResult(request));
 
             if (msg instanceof LastHttpContent) {
-                logger.info("msg is LastHttpContent");
                 LastHttpContent trailer = (LastHttpContent) msg;
                 responseData.append(RequestUtils.prepareLastResponse(request, trailer));
                 writeResponse(ctx, trailer, responseData);
@@ -55,13 +51,11 @@ public class EchoHttpRequestHandler extends SimpleChannelInboundHandler {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.info("exceptionCaught!");
         cause.printStackTrace();;
         ctx.close();
     }
 
     private void writeResponse(ChannelHandlerContext ctx) {
-        logger.info("writeResponse!");
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
                 HttpResponseStatus.CONTINUE,
                 Unpooled.EMPTY_BUFFER);
@@ -69,7 +63,6 @@ public class EchoHttpRequestHandler extends SimpleChannelInboundHandler {
     }
 
     private void writeResponse(ChannelHandlerContext ctx, LastHttpContent trailer, StringBuilder responseData) {
-        logger.info("writeResponse - responseData :\n {}", responseData);
         boolean keepAlive = HttpUtil.isKeepAlive(request);
         FullHttpResponse httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
                 ((HttpObject) trailer).decoderResult().isSuccess() ? HttpResponseStatus.OK : HttpResponseStatus.BAD_REQUEST,
