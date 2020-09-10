@@ -13,18 +13,23 @@ import org.slf4j.LoggerFactory;
 public class EchoHttpRequestHandler extends SimpleChannelInboundHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(EchoHttpRequestHandler.class);
+    private final String name;
     private HttpRequest request;
     private StringBuilder responseData = new StringBuilder();
 
+    public EchoHttpRequestHandler(String name) {
+        this.name = name;
+    }
+
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        logger.info(name + "] channelReadComplete entered");
         ctx.flush();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info("channelRead0 entered");
-        Thread.sleep(60000);
+        logger.info(name + "] channelRead0 entered");
         if (msg instanceof HttpRequest) {
             HttpRequest request = this.request = (HttpRequest) msg;
 
@@ -40,11 +45,12 @@ public class EchoHttpRequestHandler extends SimpleChannelInboundHandler {
             HttpContent httpContent = (HttpContent) msg;
             responseData.append(RequestUtils.formatBody(httpContent));
             responseData.append(RequestUtils.evaluateDecoderResult(request));
-
             if (msg instanceof LastHttpContent) {
                 LastHttpContent trailer = (LastHttpContent) msg;
                 responseData.append(RequestUtils.prepareLastResponse(request, trailer));
                 writeResponse(ctx, trailer, responseData);
+                logger.info(name + "] refCount - " + trailer.refCnt());
+                ctx.fireChannelRead(((LastHttpContent) msg).retain());
             }
         }
     }

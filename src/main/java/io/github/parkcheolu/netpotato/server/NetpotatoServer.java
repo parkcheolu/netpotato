@@ -21,6 +21,8 @@ import io.netty.util.concurrent.ImmediateEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Flow;
+
 
 public class NetpotatoServer {
 
@@ -42,6 +44,7 @@ public class NetpotatoServer {
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new NetpotatoChannelInitilizer(channelGroup))
+//                    .childHandler(new HttpParameterEchoChannelInitializer())
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture f = bootstrap.bind(port).sync();

@@ -1,5 +1,6 @@
-package io.github.parkcheolu.netpotato.test;
+package io.github.parkcheolu.netpotato;
 
+import io.github.parkcheolu.netpotato.client.NettyTestClient;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -7,7 +8,13 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class ConnectionTest {
+public class Tests {
+
+    @Test
+    public void clientTest() {
+        new NettyTestClient(9999).run();
+    }
+
 
     @Test
     public void connectionTest() throws Exception {

@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation("io.netty:netty-all:4.1.51.Final")
+    implementation("io.projectreactor:reactor-core:3.3.9.RELEASE")
     implementation("org.apache.kafka:kafka-clients:2.6.0")
     implementation("org.slf4j:slf4j-api:1.7.30")
     implementation("org.slf4j:slf4j-simple:1.7.30")

@@ -11,6 +11,9 @@ public class HttpParameterEchoChannelInitializer extends ChannelInitializer<Sock
     protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast(new HttpServerCodec())
                 .addLast(new HttpObjectAggregator(65536))
-                .addLast(new EchoHttpRequestHandler());
+                .addLast(new EchoHttpRequestHandler("Echo1"))
+                .addLast(new EchoHttpRequestHandler("Echo2"))
+                .addLast(new EchoHttpRequestHandler("Echo3"))
+                .addLast(new EchoHttpRequestHandler("Echo4"));
     }
 }
