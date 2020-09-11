@@ -1,0 +1,8 @@
+package io.github.parkcheolu.netpotato.broadcasting;
+
+import io.netty.channel.group.ChannelGroup;
+
+public interface Broadcast {
+
+    void setClientChannelGroup(ChannelGroup clientChannelGroup);
+}
