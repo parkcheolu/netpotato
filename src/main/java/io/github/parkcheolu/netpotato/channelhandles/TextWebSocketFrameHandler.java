@@ -23,8 +23,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         logger.info("userEventTriggered - " + evt);
         if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
             ctx.pipeline().remove(WebSocketUpgradeForwardingHandler.class);
-            channelGroup.writeAndFlush(new TextWebSocketFrame("New client " + ctx.channel() + " joined"));
             channelGroup.add(ctx.channel());
+            channelGroup.writeAndFlush(new TextWebSocketFrame("New client " + ctx.channel() + " joined"));
         } else {
             super.userEventTriggered(ctx, evt);
         }

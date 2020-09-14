@@ -1,5 +1,8 @@
 package io.github.parkcheolu.netpotato.config;
 
+import io.github.parkcheolu.netpotato.broadcasting.Broadcast;
+import io.github.parkcheolu.netpotato.broadcasting.ClientChannelGroup;
+import io.github.parkcheolu.netpotato.broadcasting.SourceBroadcast;
 import io.github.parkcheolu.netpotato.server.NetpotatoChannelInitilizer;
 import io.github.parkcheolu.netpotato.server.NetpotatoServer;
 import io.netty.channel.Channel;
@@ -24,7 +27,9 @@ public class ServerConfiguration {
 
     @Bean
     public ChannelGroup clientChannelGroup() {
-        return new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
+        ClientChannelGroup  clientChannelGroup =
+                new ClientChannelGroup(new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE));
+        return clientChannelGroup;
     }
 
     @Bean

@@ -13,10 +13,10 @@ import io.netty.handler.logging.LoggingHandler;
 
 public class NetpotatoChannelInitilizer extends ChannelInitializer<Channel> {
 
-    private final ChannelGroup channelGroup;
+    private final ChannelGroup clientChannelGroup;
 
-    public NetpotatoChannelInitilizer(ChannelGroup channelGroup) {
-        this.channelGroup = channelGroup;
+    public NetpotatoChannelInitilizer(ChannelGroup clientChannelGroup) {
+        this.clientChannelGroup = clientChannelGroup;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class NetpotatoChannelInitilizer extends ChannelInitializer<Channel> {
                 .addLast(new HttpObjectAggregator(64 * 1024))
                 .addLast(new WebSocketUpgradeForwardingHandler("/ws"))
                 .addLast(new WebSocketServerProtocolHandler("/ws"))
-                .addLast(new TextWebSocketFrameHandler(channelGroup));
+                .addLast(new TextWebSocketFrameHandler(clientChannelGroup));
 
     }
 }

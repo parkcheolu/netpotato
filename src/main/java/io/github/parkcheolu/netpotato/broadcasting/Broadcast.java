@@ -4,5 +4,7 @@ import io.netty.channel.group.ChannelGroup;
 
 public interface Broadcast {
 
-    void setClientChannelGroup(ChannelGroup clientChannelGroup);
+    void setClient(ChannelGroup clientChannelGroup);
+
+    void dispatch(Object msg);
 }
