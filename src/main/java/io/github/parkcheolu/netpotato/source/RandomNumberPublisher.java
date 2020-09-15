@@ -13,6 +13,11 @@ public class RandomNumberPublisher implements CorePublisher<Object> {
 
     @Override
     public void subscribe(CoreSubscriber<? super Object> subscriber) {
+        subscribe((Subscriber<? super Object>) subscriber);
+    }
+
+    @Override
+    public void subscribe(Subscriber<? super Object> s) {
         Flux.create(sink -> {
             while (true) {
                 sink.next(ThreadLocalRandom.current().nextLong());
@@ -23,10 +28,6 @@ public class RandomNumberPublisher implements CorePublisher<Object> {
                 }
             }
         }).log()
-        .subscribe(subscriber);
-    }
-
-    @Override
-    public void subscribe(Subscriber<? super Object> s) {
+                .subscribe(s);
     }
 }

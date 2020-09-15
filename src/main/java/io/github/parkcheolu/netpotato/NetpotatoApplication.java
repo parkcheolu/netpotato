@@ -5,6 +5,7 @@ import io.github.parkcheolu.netpotato.server.NetpotatoServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +24,7 @@ public class NetpotatoApplication implements CommandLineRunner {
     SourceBroadcast broadcast;
 
     @Autowired
+    @Qualifier("kafkaSourcePublisher")
     CorePublisher sourcePublisher;
 
     public static void main(String[] args) throws Exception {
@@ -33,9 +35,7 @@ public class NetpotatoApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         logger.info("Setting broadcasting source...");
-        Schedulers.elastic().schedule(() -> {
-            sourcePublisher.subscribe(broadcast);
-        });
+        Schedulers.elastic().schedule(() -> sourcePublisher.subscribe(broadcast));
         logger.info("Starting NetpotatoServer...");
         netpotatoServer.run();
     }

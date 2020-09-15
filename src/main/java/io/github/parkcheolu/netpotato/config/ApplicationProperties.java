@@ -7,16 +7,24 @@ import org.springframework.stereotype.Component;
 public class ApplicationProperties {
 
     @Value("${server.port:8080}")
-    private int serverPort;
+    int serverPort;
 
     @Value("${server.connection-thread-count:1}")
-    private int connectionThreadCount;
+    int connectionThreadCount;
 
-    public int getServerPort() {
-        return serverPort;
-    }
+    @Value("${source.kafka.streams.application-id:source-streams-pipe}")
+    String kafkaStreamsApplicationId;
 
-    public int getConnectionThreadCount() {
-        return connectionThreadCount;
+    @Value("${source.kafka.bootstrap.server:10.13.253.144:9092}")
+    String kafkaBootstrapServer;
+
+    @Value("${source.kafka.input-topic:input-logs}")
+    String kafkaSourceInputTopic;
+
+    @Value("${source.kafka.output-topic:output-logs}")
+    String kafkaSourceOutputTopic;
+
+    public String getKafkaSourceInputTopic() {
+        return kafkaSourceInputTopic;
     }
 }

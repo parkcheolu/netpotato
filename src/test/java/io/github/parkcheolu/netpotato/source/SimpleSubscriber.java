@@ -3,7 +3,7 @@ package io.github.parkcheolu.netpotato.source;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 
-public class SimpleSubscriber implements CoreSubscriber {
+public class SimpleSubscriber implements CoreSubscriber<Object> {
 
     private Subscription subscription;
 

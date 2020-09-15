@@ -24,9 +24,7 @@ public class SimpleFileContentPublisher implements CorePublisher<String> {
 
     @Override
     public void subscribe(CoreSubscriber<? super String> subscriber) {
-        fileContentFlux
-                .log()
-                .subscribe(subscriber);
+        subscribe((Subscriber<? super String>) subscriber);
     }
 
     @Override

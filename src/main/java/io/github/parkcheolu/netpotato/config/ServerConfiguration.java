@@ -39,7 +39,7 @@ public class ServerConfiguration {
 
     @Bean(destroyMethod = "shutdownGracefully")
     public EventLoopGroup boosGroup() {
-        return new NioEventLoopGroup(properties.getConnectionThreadCount());
+        return new NioEventLoopGroup(properties.connectionThreadCount);
     }
 
     @Bean(destroyMethod = "shutdownGracefully")
@@ -49,7 +49,7 @@ public class ServerConfiguration {
 
     @Bean
     public NetpotatoServer netpotatoServer() {
-        NetpotatoServer netpotatoServer = new NetpotatoServer(properties.getServerPort(),
+        NetpotatoServer netpotatoServer = new NetpotatoServer(properties.serverPort,
                 clientChannelInitializer());
         netpotatoServer.setBossGroup(boosGroup());
         netpotatoServer.setWorkerGroup(workerGroup());
